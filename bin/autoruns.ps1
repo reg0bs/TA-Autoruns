@@ -33,7 +33,7 @@ $Process.PriorityClass = 'BelowNormal'
 
 # If autorunsc64.exe was not downloaded, show error and exit
 if (!(Test-Path $AutorunsExe)) {
-    Write-Ouput 'File not found: ' + $AutorunsExe + '. Please download from https://live.sysinternals.com/autorunsc64.exe and place it into the bin folder'
+    Write-Output 'Autoruns executable not found. Please download from https://live.sysinternals.com/autorunsc64.exe and place it into the bin folder'
     exit -1
 }
 
