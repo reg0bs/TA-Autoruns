@@ -17,10 +17,10 @@ param (
 $ErrorActionPreference = 'Continue'
 
 $Timestamp =        Get-Date -Format o
-$AutorunsExe =      Join-Path -Path $PSScriptRoot -ChildPath 'autorunsc64.exe'
-$AutorunsCsv =      Join-Path -Path $PSScriptRoot -ChildPath 'autoruns.csv'
-$AutorunsCsvTemp =  Join-Path -Path $PSScriptRoot -ChildPath 'autoruns-temp.csv'
-$AutorunsState =    Join-Path -Path $PSScriptRoot -ChildPath 'autoruns-state.txt'
+$AutorunsExe =      [IO.Path]::Combine($PSScriptRoot, 'autorunsc64.exe')
+$AutorunsCsv =      [IO.Path]::Combine((Get-Item env:\SPLUNK_HOME).value, 'var', 'log', 'autoruns.csv')
+$AutorunsCsvTemp =  [IO.Path]::Combine((Get-Item env:\SPLUNK_HOME).value, 'var', 'log', 'autoruns-temp.csv')
+$AutorunsState =    [IO.Path]::Combine((Get-Item env:\SPLUNK_HOME).value, 'var', 'log', 'autoruns-state.txt')
 
 # Cleanup temporary files
 if (Test-Path -Path $AutorunsCsvTemp) {
@@ -37,8 +37,13 @@ if (!(Test-Path $AutorunsExe)) {
     exit -1
 }
 
-# If baseline is older then $MaxBaselineAge or $Baseline was specified then delete baseline to force a new one
-if ((Test-Path -Path $AutorunsState) -and ($PSBoundParameters.ContainsKey('MaxBaselineAge')) -or $Baseline) {
+# If $Baseline was specified delete baseline to force a new one
+if ($Baseline -and (Test-Path -Path $AutorunsCsv)) {
+    Remove-Item -Path $AutorunsCsv -Force
+}
+
+# If baseline is older than $MaxBaselineAge delete baseline to force a new one
+if ((Test-Path -Path $AutorunsState) -and ($PSBoundParameters.ContainsKey('MaxBaselineAge'))) {
     [DateTime]$BaselineDate = Get-Content -Path $AutorunsState
     $Now = Get-Date
     $BaselineAge = New-Timespan -Start $BaselineDate -End $Now
