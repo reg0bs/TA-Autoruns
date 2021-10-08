@@ -1,5 +1,5 @@
 # TA-Autoruns
-Technical Addon for Splunk to ingest Sysinternal's Autoruns Output
+Technical Addon for Splunk to ingest Sysinternals' Autoruns output including the ability to only index changed entries.
 
 **Note:** Splunk Universal Forwarders 8.0.0+ have a known issue around PowerShell inputs.
 Please open a support case mentioning issue SPL-196294 to receive the fixed `splunk-powershell-common.ps1`.
