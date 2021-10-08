@@ -1,6 +1,9 @@
 # TA-Autoruns
 Technical Addon for Splunk to ingest Sysinternal's Autoruns Output
 
+**Note:** Splunk Universal Forwarders 8.0.0+ have a known issue around PowerShell inputs.
+Please open a support case mentioning issue SPL-196294 to receive the fixed `splunk-powershell-common.ps1`.
+
 This TA executes the Sysinternals Autoruns CLI utility and returns the results to be picked up by Splunk.
 
 This TA was inspired by Palantir's AutorunsToWinEventLog (https://github.com/palantir/windows-event-forwarding),
