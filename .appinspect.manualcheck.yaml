@@ -1,0 +1,28 @@
+check_for_auto_update_features:
+  comment: 'ACK'
+check_for_known_vulnerabilities_in_third_party_libraries:
+  comment: 'ACK'
+check_for_reverse_shells:
+  comment: 'ACK'
+check_external_data_sources:
+  comment: 'ACK'
+check_splunk_logo:
+  comment: 'ACK'
+check_authorization_credentials:
+  comment: 'ACK'
+check_embedded_links:
+  comment: 'ACK'
+check_fs_writes:
+  comment: 'ACK'
+check_hard_coded_paths:
+  comment: 'ACK'
+check_dependencies:
+  comment: 'ACK'
+check_documented_included_open_source:
+  comment: 'ACK'
+check_editing_and_proofreading:
+  comment: 'ACK'
+check_requires_access_to_files_outside_apps_dir:
+  comment: 'ACK'
+check_link_includes_contact_info:
+  comment: 'ACK'
