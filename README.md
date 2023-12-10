@@ -1,9 +1,6 @@
 # TA-Autoruns
 Technical Addon for Splunk to ingest Sysinternals' Autoruns output including the ability to only index changed entries.
 
-**Note:** Splunk Universal Forwarders 8.0.0+ have a known issue around PowerShell inputs.
-Please open a support case mentioning issue SPL-196294 to receive the fixed `splunk-powershell-common.ps1`.
-
 This TA executes the Sysinternals Autoruns CLI utility and returns the results to be picked up by Splunk.
 
 This TA was inspired by Palantir's AutorunsToWinEventLog (https://github.com/palantir/windows-event-forwarding),
@@ -22,7 +19,7 @@ The following example creates a new baseline every 7 days and logs changes every
 [powershell://Autoruns]
 script = . "$SplunkHome\etc\apps\TA-autoruns\bin\autoruns.ps1" -MaxBaselineAge 7:00:00:00
 schedule = 0 */4 * * *
-sourcetype = autoruns
+sourcetype = Autoruns
 disabled = false
 ```
 If you don't specify -MaxBaselineAge only changes will be logged per default:
@@ -30,7 +27,7 @@ If you don't specify -MaxBaselineAge only changes will be logged per default:
 [powershell://Autoruns]
 script = . "$SplunkHome\etc\apps\TA-autoruns\bin\autoruns.ps1"
 schedule = 0 */4 * * *
-sourcetype = autoruns
+sourcetype = Autoruns
 disabled = false
 ```
 If you want to force the creation of a new baseline on every run you can pass the -Baseline argument
@@ -38,6 +35,6 @@ If you want to force the creation of a new baseline on every run you can pass th
 [powershell://Autoruns]
 script = . "$SplunkHome\etc\apps\TA-autoruns\bin\autoruns.ps1 -Baseline"
 schedule = 0 */4 * * *
-sourcetype = autoruns
+sourcetype = Autoruns
 disabled = false
 ```
