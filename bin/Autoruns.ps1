@@ -1,5 +1,5 @@
 # Author: @reg0bs
-# https://github.com/reg0bs/TA-autoruns
+# https://github.com/reg0bs/TA-Autoruns
 # Credits go to the original authors: Chris Long (@Centurion), Andy Robbins (@_wald0) and of course to Mark Russinovich (@markrussinovich)
 
 # This TA executes the Sysinternals Autoruns CLI utility and returns the results to be picked up by Splunk
