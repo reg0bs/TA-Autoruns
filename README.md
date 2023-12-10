@@ -1,5 +1,5 @@
 # TA-Autoruns
-Technical Addon for Splunk to ingest Sysinternals' Autoruns output including the ability to only index changed entries.
+### Splunk App To Ingest Sysinternals’ Autoruns Output Including the Ability To Only Index Changed Entries.
 
 This TA executes the Sysinternals Autoruns CLI utility and returns the results to be picked up by Splunk.
 
