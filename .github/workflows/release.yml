@@ -1,52 +1,53 @@
 ---
-  name: Splunk AppInspect
-  on: [ push ]
-  jobs:
-    release:
-      runs-on: ubuntu-latest
-      steps:
-        - name: Check Out Repository Code
-          uses: actions/checkout@v4
-        
-        - name: Set App Version
-          run: |
-            if [[ "$GITHUB_REF" == refs/tags/* ]]; then
-              version=${GITHUB_REF##*/}
-            else
-              version="0.0.0"
-            fi
-  
-            echo "APP_VERSION=$version" >> $GITHUB_ENV
-  
-        - name: Update Version
-          run: |
-            pip install crudini
-            crudini --set ${{ github.event.repository.name }}/default/app.conf launcher version $APP_VERSION
-            cat ${{ github.event.repository.name }}/default/app.conf
-        
-        - name: Inspect App
-          run: |
-            find ${{ github.event.repository.name }} -type f -exec chmod 644 '{}' \;
-            find ${{ github.event.repository.name }} -type d -exec chmod 755 '{}' \;
-            tar -cvzf ${{ github.event.repository.name }}_${{ env.APP_VERSION }}.tgz ${{ github.event.repository.name }}
-        
-        - uses: splunk/appinspect-cli-action@v2
-          with:
-            app_path: ${{ github.event.repository.name }}_${{ env.APP_VERSION }}.tgz
-  
-        - name: Package App
-          if: env.APP_VERSION != '0.0.0'
-          uses: actions/upload-artifact@v3
-          with:
-            name: AppInspect results
-            path: appinspect_result.json
-  
-        - name: Create Release
-          if: env.APP_VERSION != '0.0.0'
-          uses: "marvinpinto/action-automatic-releases@latest"
-          with:
-            repo_token: "${{ secrets.GITHUB_TOKEN }}"
-            automatic_release_tag: ${{ env.APP_VERSION }}
-            prerelease: false
-            files: |
-              ${{ github.event.repository.name }}_${{ env.APP_VERSION }}.tgz
+name: Build Splunk App
+on: [ push ]
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Out Repository Code
+        uses: actions/checkout@v4
+      
+      - name: Set App Version
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/* ]]; then
+            version=${GITHUB_REF##*/}
+          else
+            version="0.0.0"
+          fi
+
+          echo "APP_VERSION=$version" >> $GITHUB_ENV
+
+      - name: Update Version
+        run: |
+          pip install crudini
+          crudini --set ${{ github.event.repository.name }}/default/app.conf launcher version $APP_VERSION
+          cat ${{ github.event.repository.name }}/default/app.conf
+      
+      - name: Package App
+        run: |
+          find ${{ github.event.repository.name }} -type f -exec chmod 644 '{}' \;
+          find ${{ github.event.repository.name }} -type d -exec chmod 755 '{}' \;
+          tar -cvzf ${{ github.event.repository.name }}_${{ env.APP_VERSION }}.tgz ${{ github.event.repository.name }}
+      
+      - name: Inspect App
+        uses: splunk/appinspect-cli-action@v2
+        with:
+          app_path: ${{ github.event.repository.name }}_${{ env.APP_VERSION }}.tgz
+
+      - name: Upload App
+        if: env.APP_VERSION != '0.0.0'
+        uses: actions/upload-artifact@v3
+        with:
+          name: AppInspect results
+          path: appinspect_result.json
+
+      - name: Create Release
+        if: env.APP_VERSION != '0.0.0'
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: ${{ env.APP_VERSION }}
+          prerelease: false
+          files: |
+            ${{ github.event.repository.name }}_${{ env.APP_VERSION }}.tgz
